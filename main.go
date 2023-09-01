@@ -15,7 +15,6 @@ func main() {
 	}
 
 	scene := scenes.TrainingRoomFactory{}.Create()
-	scene.SetPosition(res.GameSize.By(0.5))
 	game.PushScene(scene)
 
 	camera := &hnbEntities.Camera{

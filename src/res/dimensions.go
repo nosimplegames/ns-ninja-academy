@@ -8,4 +8,6 @@ var (
 	TileSize   = hnbMath.Vector{X: 16, Y: 16}
 
 	NinjaFrameSize = hnbMath.Vector{X: 16, Y: 16}
+
+	ShurikenFrameSize = hnbMath.Vector{X: 5, Y: 5}
 )

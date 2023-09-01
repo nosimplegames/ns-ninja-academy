@@ -10,6 +10,8 @@ type Animations struct {
 	NinjaFallingAnimation hnbCore.IAnimation
 	NinjaWalkingAnimation hnbCore.IAnimation
 	NinjaJumpingAnimation hnbCore.IAnimation
+
+	ShurikenAnimation hnbCore.IAnimation
 }
 
 var animations *Animations = nil
@@ -48,6 +50,14 @@ func loadAnimations() *Animations {
 		LoopCount:     hnbAnimations.AnimationInfiniteLoop,
 	}.Create(nil)
 	animations.NinjaJumpingAnimation = animations.NinjaFallingAnimation
+
+	animations.ShurikenAnimation = hnbAnimations.SpriteAnimationFactory{
+		Texture:       textures.ShurikenSpriteSheet,
+		FrameSize:     ShurikenFrameSize,
+		FrameCount:    3,
+		FrameDuration: 0.03,
+		LoopCount:     hnbAnimations.AnimationInfiniteLoop,
+	}.Create(nil)
 
 	return animations
 }

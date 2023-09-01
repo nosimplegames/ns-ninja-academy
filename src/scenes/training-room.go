@@ -35,6 +35,8 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	}.Create()
 
 	player := PlayerFactory{}.Create()
+	player.SetPosition(res.GameSize.By(0.5))
+	tileMap.SetPosition(res.GameSize.By(0.5))
 
 	hnbCore.EntityAdder{
 		Children: hnbCore.EntityChildren{

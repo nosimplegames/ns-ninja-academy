@@ -12,4 +12,7 @@ var (
 	ninjaIdleSpriteSheet []byte
 	//go:embed ninja-walking-animation.png
 	ninjaWalkingSpriteSheet []byte
+
+	//go:embed shuriken-animation.png
+	shurikenSpriteSheet []byte
 )

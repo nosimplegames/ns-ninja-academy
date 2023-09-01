@@ -41,4 +41,6 @@ func (factory CharacterFactory) Init(character *Character) {
 			}.Create(),
 		},
 	}.Init(&character.FSM)
+
+	character.lookingDirection = movement.DirectionRight
 }

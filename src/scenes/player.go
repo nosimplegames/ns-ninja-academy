@@ -3,12 +3,12 @@ package scenes
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
-	"simple-games.com/ninja/src/character"
 	"simple-games.com/ninja/src/movement"
+	"simple-games.com/ninja/src/ninja"
 )
 
 type Player struct {
-	character.Character
+	ninja.Ninja
 }
 
 func (player *Player) HandleInput() {
@@ -28,5 +28,9 @@ func (player *Player) HandleInput() {
 
 	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		player.Jump()
+	}
+
+	if inpututil.IsKeyJustReleased(ebiten.KeyJ) {
+		player.ThrowShuriken()
 	}
 }

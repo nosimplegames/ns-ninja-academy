@@ -13,6 +13,8 @@ type Character struct {
 
 	fsm.FSM[ICharacter]
 	movement.DynamicBody
+
+	lookingDirection movement.Direction
 }
 
 func (character *Character) UpdateFrame() {
@@ -55,12 +57,16 @@ func (character *Character) SetMovingDirection(direction movement.Direction) {
 		if !character.IsFalling() {
 			character.SetState("idle")
 		}
+
 	case movement.DirectionRight:
 		character.SetScale(hnbMath.Vector{X: 1, Y: 1})
 		character.SetState("walking")
+		character.lookingDirection = direction
+
 	case movement.DirectionLeft:
 		character.SetScale(hnbMath.Vector{X: -1, Y: 1})
 		character.SetState("walking")
+		character.lookingDirection = direction
 	}
 }
 
@@ -78,4 +84,8 @@ func (character *Character) Jump() {
 	if wasStateChanged {
 		character.DynamicBody.Jump()
 	}
+}
+
+func (character Character) GetLookingDirection() movement.Direction {
+	return character.lookingDirection
 }
