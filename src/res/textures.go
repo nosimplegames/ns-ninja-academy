@@ -18,6 +18,7 @@ type Textures struct {
 
 	ShurikenSpriteSheet hnbRender.Texture
 	Log                 hnbRender.Texture
+	FloorTrap           hnbRender.Texture
 }
 
 var textures *Textures = nil
@@ -60,6 +61,7 @@ func loadTextures() *Textures {
 	textures.ShurikenSpriteSheet = hnbAssets.LoadTexture(shurikenSpriteSheet)
 
 	textures.Log = hnbAssets.LoadTexture(logTexture)
+	textures.FloorTrap = hnbAssets.LoadTexture(floorTrapTexture)
 
 	return textures
 }

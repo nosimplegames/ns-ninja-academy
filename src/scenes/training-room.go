@@ -20,7 +20,7 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	scene := &TrainingRoom{}
 
 	centerOfTheMap := res.GameSize.By(0.5)
-	floorPosition := res.GameSize.Y - 24
+	floorPosition := res.GameSize.Y - 16
 
 	tileMap := tilemap.TileMapFactory{
 		MapEntityCreators: tilemap.GetDefaultMapEntityCreators(),
@@ -44,21 +44,29 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	player := PlayerFactory{}.Create()
 	player.SetPosition(hnbMath.Vector{
 		X: res.GameSize.X * 0.1,
-		Y: floorPosition,
+		Y: floorPosition - 8,
 	})
 
 	log := obstacles.LogFactory{}.Create()
 	log.SetPosition(hnbMath.Vector{
 		X: res.GameSize.X * 0.8,
-		Y: floorPosition,
+		Y: floorPosition - 8,
 	})
 	hnbPhysics.AddCollisionable(log)
+
+	trap := obstacles.FloorTrapFactory{}.Create()
+	trap.SetPosition(hnbMath.Vector{
+		X: res.GameSize.X * 0.4,
+		Y: floorPosition - 2.5,
+	})
+	hnbPhysics.AddCollisionable(trap)
 
 	hnbCore.EntityAdder{
 		Children: hnbCore.EntityChildren{
 			tileMap,
 			player,
 			log,
+			trap,
 		},
 		Parent: scene,
 	}.Add()

@@ -18,4 +18,6 @@ var (
 
 	//go:embed log.png
 	logTexture []byte
+	//go:embed floor-trap.png
+	floorTrapTexture []byte
 )

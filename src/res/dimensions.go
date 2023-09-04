@@ -11,5 +11,6 @@ var (
 
 	ShurikenFrameSize = hnbMath.Vector{X: 5, Y: 5}
 
-	LogFrameSize = hnbMath.Vector{X: 11, Y: 16}
+	LogFrameSize       = hnbMath.Vector{X: 11, Y: 16}
+	FloorTrapFrameSize = hnbMath.Vector{X: 16, Y: 5}
 )

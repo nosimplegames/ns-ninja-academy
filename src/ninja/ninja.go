@@ -18,3 +18,13 @@ func (ninja Ninja) ThrowShuriken() {
 	hnbCore.AddChildToRoot(shuriken)
 	hnbPhysics.AddCollisionable(shuriken)
 }
+
+func (ninja *Ninja) OnCollision(collision hnbPhysics.Collision) {
+	switch collision.AnotherCollisionMask {
+	case "floor-trap":
+		ninja.Die()
+
+	default:
+		ninja.Character.OnCollision(collision)
+	}
+}
