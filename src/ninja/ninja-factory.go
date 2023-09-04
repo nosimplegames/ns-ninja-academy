@@ -17,8 +17,6 @@ func (factory NinjaFactory) Create() *Ninja {
 }
 
 func (factory NinjaFactory) Init(ninja *Ninja) {
-	ninja.SetSize(res.NinjaFrameSize)
-	ninja.SetOrigin(res.NinjaFrameSize.By(0.5))
 	animations := res.GetAnimations()
 
 	character.CharacterFactory{
@@ -27,6 +25,9 @@ func (factory NinjaFactory) Init(ninja *Ninja) {
 		WalkingAnimation: animations.NinjaWalkingAnimation,
 		JumpingAnimation: animations.NinjaJumpingAnimation,
 	}.Init(&ninja.Character)
+
+	ninja.SetSize(res.NinjaFrameSize)
+	ninja.SetOrigin(res.NinjaFrameSize.By(0.5))
 
 	hnbPhysics.AddCollisionable(ninja)
 }

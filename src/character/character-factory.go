@@ -2,6 +2,7 @@ package character
 
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
+	"github.com/nosimplegames/ns-framework/hnbPhysics"
 	"simple-games.com/ninja/src/fsm"
 	"simple-games.com/ninja/src/movement"
 )
@@ -22,6 +23,14 @@ func (factory CharacterFactory) Create() ICharacter {
 
 func (factory CharacterFactory) Init(character *Character) {
 	movement.DynamicBodyFactory{}.Init(&character.DynamicBody)
+
+	hnbPhysics.CollisionableFactory{
+		CanCollide: true,
+		CollisioningMasks: []string{
+			"map-floor",
+		},
+		CollisionMask: "character",
+	}.Init(&character.Collisionable)
 
 	fsm.FSMFactory[ICharacter]{
 		Target:           character,

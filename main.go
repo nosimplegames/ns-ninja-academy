@@ -9,9 +9,9 @@ import (
 
 func main() {
 	game := hnbCore.Game{
-		Size:       res.GameSize,
-		WindowSize: res.WindowSize,
-		// MustDrawWorld: true,
+		Size:          res.GameSize,
+		WindowSize:    res.WindowSize,
+		MustDrawWorld: true,
 	}
 
 	scene := scenes.TrainingRoomFactory{}.Create()

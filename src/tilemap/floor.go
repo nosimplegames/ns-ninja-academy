@@ -10,26 +10,21 @@ type Floor struct {
 	hnbCore.Entity
 }
 
-func (floor Floor) CanCollide() bool {
-	return true
-}
-
-func (floor Floor) CanCollideWith(_ string) bool {
-	return true
-}
-
-func (floor Floor) GetCollisionMask() string {
-	return "map-floor"
-}
-
-func (floor Floor) OnCollision(collision hnbPhysics.Collision) {
-}
-
 type FloorFactory struct {
 }
 
 func (factory FloorFactory) Create() *Floor {
 	floor := &Floor{}
+
+	hnbCore.EntityFactory{
+		CollisionableFactory: hnbPhysics.CollisionableFactory{
+			CanCollide:    true,
+			CollisionMask: "map-floor",
+			CollisioningMasks: []string{
+				"character",
+			},
+		},
+	}.Init(&floor.Entity)
 
 	return floor
 }

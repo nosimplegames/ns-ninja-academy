@@ -23,10 +23,6 @@ func (character *Character) UpdateFrame() {
 	character.Move(character.Speed)
 }
 
-func (character Character) CanCollide() bool {
-	return true
-}
-
 func (character Character) CanCollideWith(collisionMask string) bool {
 	switch collisionMask {
 	case "map-floor":
@@ -34,10 +30,6 @@ func (character Character) CanCollideWith(collisionMask string) bool {
 	default:
 		return true
 	}
-}
-
-func (character Character) GetCollisionMask() string {
-	return "character"
 }
 
 func (character *Character) OnCollision(collision hnbPhysics.Collision) {
