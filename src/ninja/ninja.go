@@ -2,6 +2,7 @@ package ninja
 
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
+	"github.com/nosimplegames/ns-framework/hnbPhysics"
 	"simple-games.com/ninja/src/character"
 )
 
@@ -15,4 +16,5 @@ func (ninja Ninja) ThrowShuriken() {
 	}.Create()
 	shuriken.SetPosition(ninja.GetPosition())
 	hnbCore.AddChildToRoot(shuriken)
+	hnbPhysics.AddCollisionable(shuriken)
 }

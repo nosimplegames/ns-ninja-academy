@@ -22,6 +22,11 @@ func (factory ShurikenFactory) Create() *Shuriken {
 	animation := res.GetAnimations().ShurikenAnimation.Copy(shuriken)
 	shuriken.SetSize(res.ShurikenFrameSize)
 	shuriken.SetOrigin(res.ShurikenFrameSize.By(0.5))
+	shuriken.SetCanCollide(true)
+	shuriken.SetCollisioningMasks([]string{
+		"log",
+	})
+	shuriken.SetCollisionMask("shuriken")
 	shuriken.OnDie.AddCallback(animation.Stop)
 	hnbCore.AddAnimation(animation)
 

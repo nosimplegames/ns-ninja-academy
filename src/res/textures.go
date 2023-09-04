@@ -17,6 +17,7 @@ type Textures struct {
 	NinjaWalkingSpriteSheet hnbRender.Texture
 
 	ShurikenSpriteSheet hnbRender.Texture
+	Log                 hnbRender.Texture
 }
 
 var textures *Textures = nil
@@ -55,7 +56,10 @@ func loadTextures() *Textures {
 	).(*ebiten.Image)
 	textures.NinjaIdleSpriteSheet = ninjaIdleSpriteSheet
 	textures.NinjaWalkingSpriteSheet = hnbAssets.LoadTexture(ninjaWalkingSpriteSheet)
+
 	textures.ShurikenSpriteSheet = hnbAssets.LoadTexture(shurikenSpriteSheet)
+
+	textures.Log = hnbAssets.LoadTexture(logTexture)
 
 	return textures
 }

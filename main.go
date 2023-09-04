@@ -11,7 +11,7 @@ func main() {
 	game := hnbCore.Game{
 		Size:          res.GameSize,
 		WindowSize:    res.WindowSize,
-		MustDrawWorld: true,
+		MustDrawWorld: false,
 	}
 
 	scene := scenes.TrainingRoomFactory{}.Create()

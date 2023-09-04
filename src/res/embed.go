@@ -15,4 +15,7 @@ var (
 
 	//go:embed shuriken-animation.png
 	shurikenSpriteSheet []byte
+
+	//go:embed log.png
+	logTexture []byte
 )
