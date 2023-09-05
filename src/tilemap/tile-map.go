@@ -4,7 +4,6 @@ import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
 	"github.com/nosimplegames/ns-framework/hnbEntities"
 	"github.com/nosimplegames/ns-framework/hnbMath"
-	"github.com/nosimplegames/ns-framework/hnbPhysics"
 	"github.com/nosimplegames/ns-framework/hnbRender"
 )
 
@@ -13,15 +12,16 @@ type TileMap struct {
 }
 
 type TileMapFactory struct {
-	MapEntityCreators MapEntityCreators
-	TileSet           hnbRender.Texture
-	TileSize          hnbMath.Vector
-	Layer             [][]int
+	TileSet  hnbRender.Texture
+	TileSize hnbMath.Vector
+	Layer    [][]int
+
+	FloorLayer [][]int
 }
 
 func (factory TileMapFactory) Create() *TileMap {
 	tileMap := factory.createTileMap()
-	factory.createTileMapEntities(tileMap)
+	factory.createCollisionables(tileMap)
 
 	return tileMap
 }
@@ -38,34 +38,49 @@ func (factory TileMapFactory) createTileMap() *TileMap {
 	return tileMap
 }
 
-func (factory TileMapFactory) createTileMapEntities(tileMap *TileMap) []IMapEntity {
-	mapEntities := []IMapEntity{}
-
-	for rowIndex := 0; rowIndex < len(factory.Layer); rowIndex++ {
+func (factory TileMapFactory) createCollisionables(parent hnbCore.IEntity) {
+	for rowIndex := 0; rowIndex < len(factory.FloorLayer); rowIndex++ {
 		row := factory.Layer[rowIndex]
 
+		floorLength := 0
+		startingColumn := -1
+
 		for columnIndex := 0; columnIndex < len(row); columnIndex++ {
-			mapEntityKey := row[columnIndex]
-			mapEntityCreator, doesMapEntityCreatorExist := factory.MapEntityCreators[mapEntityKey]
+			cell := row[columnIndex]
+			isFloor := cell != 0
 
-			if !doesMapEntityCreatorExist {
-				continue
+			if isFloor {
+				floorLength++
+
+				mustSetStartingColumn := startingColumn == -1
+
+				if mustSetStartingColumn {
+					startingColumn = columnIndex
+				}
+			} else {
+				floor := FloorFactory{
+					FloorLength:    floorLength,
+					Row:            rowIndex,
+					StartingColumn: startingColumn,
+				}.Create()
+				hnbCore.EntityAdder{
+					Parent: parent,
+					Child:  floor,
+				}.Add()
+
+				floorLength = 0
+				startingColumn = -1
 			}
-
-			mapPosition := hnbMath.Vector{
-				X: factory.TileSize.X * float64(columnIndex),
-				Y: factory.TileSize.Y * float64(rowIndex),
-			}.Add(factory.TileSize.By(0.5))
-			mapEntity := mapEntityCreator.CreateMapEntity(mapPosition, factory.TileSize)
-
-			hnbCore.EntityAdder{
-				Parent: tileMap,
-				Child:  mapEntity,
-			}.Add()
-
-			hnbPhysics.AddCollisionable(mapEntity)
 		}
-	}
 
-	return mapEntities
+		floor := FloorFactory{
+			FloorLength:    floorLength,
+			Row:            rowIndex,
+			StartingColumn: startingColumn,
+		}.Create()
+		hnbCore.EntityAdder{
+			Parent: parent,
+			Child:  floor,
+		}.Add()
+	}
 }

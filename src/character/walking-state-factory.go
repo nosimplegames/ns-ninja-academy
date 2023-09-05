@@ -17,6 +17,7 @@ func (factory WalkingStateFactory) Create() *WalkingState {
 		AllowedStates: []string{
 			"idle",
 			"jumping",
+			"falling",
 		},
 	}.Init(&state.FSMState)
 

@@ -48,3 +48,11 @@ func (fsm FSM[T]) HasCurrentState() bool {
 func (fsm FSM[T]) IsCurrentState(stateName string) bool {
 	return fsm.currentState != nil && fsm.currentState.GetName() == stateName
 }
+
+func (fsm FSM[T]) GetCurrentStateName() (string, bool) {
+	if !fsm.HasCurrentState() {
+		return "", false
+	}
+
+	return fsm.currentState.GetName(), true
+}

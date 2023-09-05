@@ -64,18 +64,25 @@ func (body *DynamicBody) Jump() {
 	body.Speed.Y -= 4
 }
 
-func (body DynamicBody) HasStopJumping() bool {
+func (body DynamicBody) IsJumping() bool {
 	isJumping := body.State == DynamicBodyJumping
+	return isJumping
+}
 
-	if !isJumping {
+func (body DynamicBody) HasStopJumping() bool {
+	if !body.IsJumping() {
 		return true
 	}
 
-	isJumping = body.Speed.Y >= 0.0
+	hasStopJumping := body.Speed.Y >= 0.0
 
-	return isJumping
+	return hasStopJumping
 }
 
 func (body *DynamicBody) SetMovingDirection(direction Direction) {
 	body.Direction = direction
+}
+
+func (body DynamicBody) IsMoving() bool {
+	return body.Direction != NoDirection
 }

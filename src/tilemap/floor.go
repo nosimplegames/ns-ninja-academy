@@ -11,33 +11,39 @@ type Floor struct {
 }
 
 type FloorFactory struct {
+	FloorLength    int
+	Row            int
+	StartingColumn int
 }
 
 func (factory FloorFactory) Create() *Floor {
+	needToCreateFloor := factory.FloorLength > 0
+
+	if !needToCreateFloor {
+		return nil
+	}
+
 	floor := &Floor{}
 
-	hnbCore.EntityFactory{
-		CollisionableFactory: hnbPhysics.CollisionableFactory{
-			CanCollide:    true,
-			CollisionMask: "map-floor",
-			CollisioningMasks: []string{
-				"character",
-			},
-		},
-	}.Init(&floor.Entity)
+	floor.SetCanCollide(true)
+	floor.SetCollisionMask("map-floor")
+	floor.SetCollisioningMasks([]string{
+		"character",
+	})
+
+	size := hnbMath.Vector{
+		X: float64(factory.FloorLength) * 16,
+		Y: 16,
+	}
+	floor.SetSize(size)
+	floor.SetOrigin(size.By(0.5))
+	position := hnbMath.Vector{
+		X: float64(factory.StartingColumn*16) + size.X*0.5,
+		Y: float64(factory.Row*16) + size.Y*0.5,
+	}
+	floor.SetPosition(position)
+
+	hnbPhysics.AddCollisionable(floor)
 
 	return floor
-}
-
-func (factory FloorFactory) CreateMapEntity(
-	position hnbMath.Vector,
-	tileSize hnbMath.Vector,
-) IMapEntity {
-	mapLimit := factory.Create()
-
-	mapLimit.SetSize(tileSize)
-	mapLimit.SetOrigin(tileSize.By(0.5))
-	mapLimit.SetPosition(position)
-
-	return mapLimit
 }

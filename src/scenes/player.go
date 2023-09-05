@@ -30,7 +30,7 @@ func (player *Player) HandleInput() {
 		player.Jump()
 	}
 
-	if inpututil.IsKeyJustReleased(ebiten.KeyJ) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {
 		player.ThrowShuriken()
 	}
 }

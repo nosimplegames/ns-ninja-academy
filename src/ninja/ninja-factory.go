@@ -1,6 +1,7 @@
 package ninja
 
 import (
+	"github.com/nosimplegames/ns-framework/hnbMath"
 	"github.com/nosimplegames/ns-framework/hnbPhysics"
 	"simple-games.com/ninja/src/character"
 	"simple-games.com/ninja/src/res"
@@ -26,7 +27,14 @@ func (factory NinjaFactory) Init(ninja *Ninja) {
 		JumpingAnimation: animations.NinjaJumpingAnimation,
 	}.Init(&ninja.Character)
 
-	ninja.SetSize(res.NinjaFrameSize)
+	ninja.SetCollisioningMasks([]string{
+		"map-floor",
+		"floor-trap",
+	})
+	ninja.SetSize(hnbMath.Vector{
+		X: res.NinjaFrameSize.X * 0.6,
+		Y: res.NinjaFrameSize.Y,
+	})
 	ninja.SetOrigin(res.NinjaFrameSize.By(0.5))
 
 	hnbPhysics.AddCollisionable(ninja)
