@@ -22,53 +22,75 @@ func (character *Character) UpdateFrame() {
 	character.FSM.UpdateFrame()
 	character.DynamicBody.UpdateFrame()
 	character.Move(character.Speed)
+}
 
-	mustFall := !character.isOverTheFloor && !character.IsJumping()
-	if mustFall {
-		character.Fall()
-	} else {
-		character.isOverTheFloor = false
+func (character Character) CanCollideWith(another string) bool {
+	switch another {
+	case "floor":
+		return true
+
+	case "floor-boundary":
+		return character.isOverTheFloor
+
+	case "wall":
+		return true
+
+	default:
+		return character.Collisionable.CanCollideWith(another)
 	}
 }
 
 func (character *Character) OnCollision(collision hnbPhysics.Collision) {
-	stateName, hasState := character.GetCurrentStateName()
+	switch collision.AnotherCollisionMask {
+	case "floor-boundary":
+		character.Fall()
 
-	if !hasState {
-		return
-	}
+	case "wall":
+		xResolution := collision.CollisionResolverCalculator.CalculateXResolution()
+		character.MoveX(xResolution)
 
-	isCollidingWithFloor := collision.AnotherCollisionMask == "map-floor"
+	case "floor":
+		anotherAABB := collision.AnotherAABB
+		characterPrevAABB := character.GetPrevAABB()
+		shouldResolveByX := character.IsMoving() && (characterPrevAABB.Right() <= anotherAABB.Left() || characterPrevAABB.Left() >= anotherAABB.Right())
 
-	switch stateName {
-	case "falling":
-		if isCollidingWithFloor {
-			wasResolvedByY := character.ResolveCollisionWithFloor(collision)
+		if !shouldResolveByX {
+			characterAABB := character.GetAABB()
+			yResolution := collision.CollisionResolverCalculator.CalculateYResolution()
+			characterTopAfterYResolution := characterAABB.Top() + yResolution
+			characterBottomAfterYResolution := characterAABB.Bottom() + yResolution
 
-			if wasResolvedByY {
-				character.StopFalling()
-				character.SetState("idle")
+			shouldResolveByY := (character.IsJumping() && characterTopAfterYResolution >= anotherAABB.Bottom()) ||
+				(character.IsFalling() && characterBottomAfterYResolution <= anotherAABB.Top())
+
+			if shouldResolveByY {
+				shouldNotResolve := (characterAABB.Right() == anotherAABB.Left() || characterAABB.Left() == anotherAABB.Right())
+				if shouldNotResolve {
+					return
+				}
+			} else {
+				return
+			}
+		} else {
+			characterAABB := character.GetAABB()
+			shouldNotResolve := (characterAABB.Top() == anotherAABB.Bottom())
+			if shouldNotResolve {
+				return
 			}
 		}
 
-	case "jumping":
-		if isCollidingWithFloor {
-			wasResolvedByY := character.ResolveCollisionWithFloor(collision)
+		if shouldResolveByX {
+			xResolution := collision.CollisionResolverCalculator.CalculateXResolution()
+			character.MoveX(xResolution)
+		} else {
+			yResolution := collision.CollisionResolverCalculator.CalculateYResolution()
+			character.MoveY(yResolution)
 
-			if wasResolvedByY {
+			if character.IsJumping() {
 				character.Fall()
+			} else if character.IsFalling() {
+				character.StopFalling()
 			}
-		}
-		characterYResolution := collision.CollisionResolverCalculator.CalculateYResolution()
-		character.Move(hnbMath.Vector{
-			Y: characterYResolution,
-		})
-
-	case "walking":
-		isCollidingWithTheFloor := collision.AnotherCollisionMask == "map-floor"
-
-		if isCollidingWithTheFloor {
-			character.isOverTheFloor = true
 		}
 	}
 }
@@ -99,12 +121,17 @@ func (character *Character) Fall() {
 
 	if wasStateChanged {
 		character.DynamicBody.Fall()
+		character.isOverTheFloor = false
 	}
 }
 
 func (character *Character) StopFalling() {
-	character.isOverTheFloor = true
-	character.DynamicBody.StopFalling()
+	wasStateChanged := character.SetState("idle")
+
+	if wasStateChanged {
+		character.isOverTheFloor = true
+		character.DynamicBody.StopFalling()
+	}
 }
 
 func (character *Character) Jump() {
@@ -112,6 +139,7 @@ func (character *Character) Jump() {
 
 	if wasStateChanged {
 		character.DynamicBody.Jump()
+		character.isOverTheFloor = false
 	}
 }
 
@@ -120,7 +148,6 @@ func (character Character) GetLookingDirection() movement.Direction {
 }
 
 func (character *Character) ResolveCollisionWithFloor(collision hnbPhysics.Collision) bool {
-	// stateName, _ := character.GetCurrentStateName()
 	shouldResolveByX := character.IsMoving() && !character.isOverTheFloor
 
 	if shouldResolveByX {

@@ -16,7 +16,6 @@ func (ninja Ninja) ThrowShuriken() {
 	}.Create()
 	shuriken.SetPosition(ninja.GetPosition())
 	hnbCore.AddChildToRoot(shuriken)
-	hnbPhysics.AddCollisionable(shuriken)
 }
 
 func (ninja *Ninja) OnCollision(collision hnbPhysics.Collision) {

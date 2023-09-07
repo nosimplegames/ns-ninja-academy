@@ -25,10 +25,7 @@ func (factory CharacterFactory) Init(character *Character) {
 	movement.DynamicBodyFactory{}.Init(&character.DynamicBody)
 
 	hnbPhysics.CollisionableFactory{
-		CanCollide: true,
-		CollisioningMasks: []string{
-			"map-floor",
-		},
+		CanCollide:    true,
 		CollisionMask: "character",
 	}.Init(&character.Collisionable)
 

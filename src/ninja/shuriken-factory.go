@@ -25,6 +25,7 @@ func (factory ShurikenFactory) Create() *Shuriken {
 	shuriken.SetCanCollide(true)
 	shuriken.SetCollisioningMasks([]string{
 		"log",
+		"floor",
 	})
 	shuriken.SetCollisionMask("shuriken")
 	shuriken.OnDie.AddCallback(animation.Stop)

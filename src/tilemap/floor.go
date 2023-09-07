@@ -3,7 +3,6 @@ package tilemap
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
 	"github.com/nosimplegames/ns-framework/hnbMath"
-	"github.com/nosimplegames/ns-framework/hnbPhysics"
 )
 
 type Floor struct {
@@ -11,9 +10,8 @@ type Floor struct {
 }
 
 type FloorFactory struct {
-	FloorLength    int
-	Row            int
-	StartingColumn int
+	FloorLength int
+	Position    hnbMath.Vector
 }
 
 func (factory FloorFactory) Create() *Floor {
@@ -26,9 +24,10 @@ func (factory FloorFactory) Create() *Floor {
 	floor := &Floor{}
 
 	floor.SetCanCollide(true)
-	floor.SetCollisionMask("map-floor")
+	floor.SetCollisionMask("floor")
 	floor.SetCollisioningMasks([]string{
 		"character",
+		"shuriken",
 	})
 
 	size := hnbMath.Vector{
@@ -37,13 +36,47 @@ func (factory FloorFactory) Create() *Floor {
 	}
 	floor.SetSize(size)
 	floor.SetOrigin(size.By(0.5))
-	position := hnbMath.Vector{
-		X: float64(factory.StartingColumn*16) + size.X*0.5,
-		Y: float64(factory.Row*16) + size.Y*0.5,
-	}
-	floor.SetPosition(position)
+	floor.SetPosition(factory.Position)
 
-	hnbPhysics.AddCollisionable(floor)
+	// beginningBoundary, endingBoundary := factory.createBoundaries(size)
+	// hnbCore.EntityAdder{
+	// 	Children: hnbCore.EntityChildren{beginningBoundary, endingBoundary},
+	// 	Parent:   floor,
+	// }.Add()
 
 	return floor
 }
+
+// func (factory FloorFactory) createBoundaries(floorSize hnbMath.Vector) (hnbCore.IEntity, hnbCore.IEntity) {
+// 	beginningPosition := hnbMath.Vector{
+// 		X: -floorSize.X*0.5 - 8,
+// 		// Y: -16,
+// 	}
+// 	endingPosition := hnbMath.Vector{
+// 		X: floorSize.X*0.5 + 8,
+// 		// Y: -16,
+// 	}
+// 	beginning := factory.createBoundary(beginningPosition)
+// 	ending := factory.createBoundary(endingPosition)
+
+// 	return beginning, ending
+// }
+
+// func (factory FloorFactory) createBoundary(position hnbMath.Vector) hnbCore.IEntity {
+// 	boundary := &hnbCore.Entity{}
+
+// 	boundarySize := hnbMath.Vector{
+// 		X: 16,
+// 		Y: 16,
+// 	}
+// 	boundary.SetCanCollide(true)
+// 	boundary.SetCollisionMask("floor-boundary")
+// 	boundary.SetCollisioningMasks([]string{
+// 		"character",
+// 	})
+// 	boundary.SetSize(boundarySize)
+// 	boundary.SetOrigin(boundarySize.By(0.5))
+// 	boundary.SetPosition(position)
+
+// 	return boundary
+// }

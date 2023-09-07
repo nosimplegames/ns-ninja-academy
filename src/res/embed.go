@@ -20,4 +20,7 @@ var (
 	logTexture []byte
 	//go:embed floor-trap.png
 	floorTrapTexture []byte
+
+	//go:embed 8bitOperatorPlus8-Regular.ttf
+	mainFont []byte
 )

@@ -2,9 +2,8 @@ package scenes
 
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
+	"github.com/nosimplegames/ns-framework/hnbEntities"
 	"github.com/nosimplegames/ns-framework/hnbMath"
-	"github.com/nosimplegames/ns-framework/hnbPhysics"
-	"simple-games.com/ninja/src/obstacles"
 	"simple-games.com/ninja/src/res"
 	"simple-games.com/ninja/src/tilemap"
 )
@@ -25,59 +24,61 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	tileMap := tilemap.TileMapFactory{
 		TileSet:  res.GetTextures().Tileset,
 		TileSize: res.TileSize,
-		Layer: [][]int{
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-			{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		Data: [][]int{
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 3, 0, 5, 0, 0, 0, 4},
+			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 4},
+			{0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 4},
+			{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1, 1, 0, 4},
+			{4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4},
+			{4, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+			{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
 		},
-		FloorLayer: [][]int{
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-			{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		},
+		EntityCreators: tilemap.GetDefaultEntityCreators(),
 	}.Create()
 	tileMap.SetPosition(centerOfTheMap)
 
 	player := PlayerFactory{}.Create()
 	player.SetPosition(hnbMath.Vector{
-		X: res.GameSize.X * 0.25,
+		X: 16 * 2.5,
 		Y: floorPosition - 8,
 	})
 
-	log := obstacles.LogFactory{}.Create()
-	log.SetPosition(hnbMath.Vector{
-		X: res.GameSize.X * 0.8,
-		Y: floorPosition - 8,
+	text := hnbEntities.TextFactory{
+		Text:     "Destroy all logs!",
+		FontFace: res.GetFonts().NormalText,
+	}.Create()
+	text.SetPosition(hnbMath.Vector{
+		X: centerOfTheMap.X,
+		Y: 16,
 	})
-	hnbPhysics.AddCollisionable(log)
 
-	trap := obstacles.FloorTrapFactory{}.Create()
-	trap.SetPosition(hnbMath.Vector{
-		X: res.GameSize.X * 0.4,
-		Y: floorPosition - 2.5,
-	})
-	hnbPhysics.AddCollisionable(trap)
+	// log := obstacles.LogFactory{}.Create()
+	// log.SetPosition(hnbMath.Vector{
+	// 	X: res.GameSize.X * 0.8,
+	// 	Y: floorPosition - 8,
+	// })
+	// hnbPhysics.AddCollisionable(log)
+
+	// trap := obstacles.FloorTrapFactory{}.Create()
+	// trap.SetPosition(hnbMath.Vector{
+	// 	X: res.GameSize.X * 0.4,
+	// 	Y: floorPosition - 2.5,
+	// })
+	// hnbPhysics.AddCollisionable(trap)
 
 	hnbCore.EntityAdder{
 		Children: hnbCore.EntityChildren{
 			tileMap,
 			player,
-			log,
-			trap,
+			text,
+			// log,
+			// trap,
 		},
 		Parent: scene,
 	}.Add()
