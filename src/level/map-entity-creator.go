@@ -1,4 +1,4 @@
-package tilemap
+package level
 
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"

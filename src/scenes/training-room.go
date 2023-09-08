@@ -4,8 +4,8 @@ import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
 	"github.com/nosimplegames/ns-framework/hnbEntities"
 	"github.com/nosimplegames/ns-framework/hnbMath"
+	"simple-games.com/ninja/src/level"
 	"simple-games.com/ninja/src/res"
-	"simple-games.com/ninja/src/tilemap"
 )
 
 type TrainingRoom struct {
@@ -19,9 +19,9 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	scene := &TrainingRoom{}
 
 	centerOfTheMap := res.GameSize.By(0.5)
-	floorPosition := res.GameSize.Y - 16
+	// floorPosition := res.GameSize.Y - 16
 
-	tileMap := tilemap.TileMapFactory{
+	tileMap := level.TileMapFactory{
 		TileSet:  res.GetTextures().Tileset,
 		TileSize: res.TileSize,
 		Data: [][]int{
@@ -36,18 +36,18 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 			{0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 4},
 			{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1, 1, 0, 4},
 			{4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4},
-			{4, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+			{4, 0, 0, 6, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4},
 			{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
 		},
-		EntityCreators: tilemap.GetDefaultEntityCreators(),
+		EntityCreators: level.GetDefaultEntityCreators(),
 	}.Create()
 	tileMap.SetPosition(centerOfTheMap)
 
-	player := PlayerFactory{}.Create()
-	player.SetPosition(hnbMath.Vector{
-		X: 16 * 2.5,
-		Y: floorPosition - 8,
-	})
+	// player := level.PlayerFactory{}.Create()
+	// player.SetPosition(hnbMath.Vector{
+	// 	X: 16 * 2.5,
+	// 	Y: floorPosition - 8,
+	// })
 
 	text := hnbEntities.TextFactory{
 		Text:     "Destroy all logs!",
@@ -75,7 +75,7 @@ func (factory TrainingRoomFactory) Create() hnbCore.IScene {
 	hnbCore.EntityAdder{
 		Children: hnbCore.EntityChildren{
 			tileMap,
-			player,
+			// player,
 			text,
 			// log,
 			// trap,

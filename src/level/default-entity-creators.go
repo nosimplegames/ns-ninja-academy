@@ -1,4 +1,4 @@
-package tilemap
+package level
 
 import (
 	"github.com/nosimplegames/ns-framework/hnbCore"
@@ -73,6 +73,24 @@ func GetDefaultEntityCreators() MapEntityCreators {
 				entity.SetOrigin(entity.GetSize().By(0.5))
 
 				return entity
+			},
+		},
+		6: MapEntityCreator{
+			TileId:     0,
+			EntityName: "player-spawner",
+			CreateEntity: func(position hnbMath.Vector, _ int) hnbCore.IEntity {
+				spawner := &EntitySpawner{
+					CreateEntity: func() hnbCore.IEntity {
+						player := PlayerFactory{}.Create()
+						return player
+					},
+				}
+
+				spawner.SetSize(hnbMath.Vector{X: 16, Y: 16})
+				spawner.SetOrigin(hnbMath.Vector{X: 8, Y: 8})
+				spawner.SetPosition(position)
+
+				return spawner
 			},
 		},
 	}

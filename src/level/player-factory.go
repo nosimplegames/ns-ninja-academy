@@ -1,4 +1,4 @@
-package scenes
+package level
 
 import (
 	"simple-games.com/ninja/src/ninja"

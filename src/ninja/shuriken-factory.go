@@ -28,7 +28,7 @@ func (factory ShurikenFactory) Create() *Shuriken {
 		"floor",
 	})
 	shuriken.SetCollisionMask("shuriken")
-	shuriken.OnDie.AddCallback(animation.Stop)
+	shuriken.On("die", animation.Stop)
 	hnbCore.AddAnimation(animation)
 
 	return shuriken

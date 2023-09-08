@@ -1,4 +1,4 @@
-package scenes
+package level
 
 import (
 	"github.com/hajimehoshi/ebiten"
